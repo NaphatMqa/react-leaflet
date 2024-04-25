@@ -4,8 +4,6 @@ import ReactDOM from "react-dom";
 import { MapContainer, TileLayer, useMap, GeoJSON } from 'react-leaflet'
 import "leaflet/dist/leaflet.css"
 import { useEffect, useState } from 'react';
-//import seg from "./seg.json"
-
 
 export default function Home() {
 
@@ -64,7 +62,5 @@ export default function Home() {
     </>
   );
 }
-function typeOf(geoContent: any): any {
-  throw new Error('Function not implemented.');
-}
+
 
