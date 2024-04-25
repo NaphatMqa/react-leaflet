@@ -1,9 +1,11 @@
 "use client"
+
 import React from "react";
 import ReactDOM from "react-dom";
 import { MapContainer, TileLayer, useMap, GeoJSON } from 'react-leaflet'
 import "leaflet/dist/leaflet.css"
 import { useEffect, useState } from 'react';
+import dynamic from 'next/dynamic'
 
 export default function Home() {
 
@@ -30,6 +32,17 @@ export default function Home() {
       console.log(geoContent);
     }
   }, [geoContent])
+
+  const MapContainer = dynamic(() => import('react-leaflet').then((mod) => mod.MapContainer), {
+    ssr: false
+  });
+  const TileLayer = dynamic(() => import('react-leaflet').then((mod) => mod.TileLayer), {
+    ssr: false
+  });
+  const GeoJSON = dynamic(() => import('react-leaflet').then((mod) => mod.GeoJSON), {
+    ssr: false
+  });
+  
 
   return (
     <>
