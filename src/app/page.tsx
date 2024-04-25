@@ -4,7 +4,7 @@ import ReactDOM from "react-dom";
 import { MapContainer, TileLayer, useMap, GeoJSON } from 'react-leaflet'
 import "leaflet/dist/leaflet.css"
 import { useEffect, useState } from 'react';
-import seg from "./seg.json"
+//import seg from "./seg.json"
 
 
 export default function Home() {
@@ -30,8 +30,6 @@ export default function Home() {
     if (geoContent != null) {
       console.log(typeof (geoContent));
       console.log(geoContent);
-      console.log(typeof (seg));
-      console.log(seg);
     }
   }, [geoContent])
 
@@ -58,7 +56,7 @@ export default function Home() {
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
         {geoContent != null && (
-          < GeoJSON data={seg} />
+          < GeoJSON data={geoContent} />
         )}
 
       </MapContainer>
