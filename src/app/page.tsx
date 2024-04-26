@@ -80,7 +80,7 @@ export default function Home(this: any) {
     saveAs(blob, "markers.geojson");
   };
 
-  /*
+  
       const MapContainer = dynamic(() => import('react-leaflet').then((mod) => mod.MapContainer), {
         ssr: false
       });
@@ -96,7 +96,7 @@ export default function Home(this: any) {
       const Marker = dynamic(() => import('react-leaflet').then((mod) => mod.GeoJSON), {
         ssr: false
       });
-    */
+    
 
   return (
     <>
