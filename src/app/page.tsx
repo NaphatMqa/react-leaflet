@@ -1,4 +1,4 @@
-"use client"
+'use client'
 
 import React from "react";
 import ReactDOM from "react-dom";
@@ -6,9 +6,11 @@ import { MapContainer, TileLayer, useMap, GeoJSON, Marker, useMapEvents } from '
 import "leaflet/dist/leaflet.css"
 import dynamic from 'next/dynamic'
 //import NoSSR from 'react-no-ssr';
-import { Icon, LatLngBoundsExpression, LatLngExpression, bounds, map } from "leaflet";
+import { Icon, LatLng, LatLngBoundsExpression, LatLngExpression, bounds, map } from "leaflet";
 import { ReactNode, useEffect, useLayoutEffect, useState } from 'react'
 import { saveAs } from 'file-saver';
+
+
 
 const DefaultOnSSR: React.FC = () => null
 
@@ -78,12 +80,6 @@ export default function Home(this: any) {
     saveAs(blob, "markers.geojson");
   };
 
-  useEffect(() => {
-    //console.log(markers);
-    //console.log(geojsonData);
-  }, [markers])
-
-  console.log(geoContent);
   /*
       const MapContainer = dynamic(() => import('react-leaflet').then((mod) => mod.MapContainer), {
         ssr: false
@@ -150,7 +146,7 @@ export default function Home(this: any) {
           <button
             className="HeaderButton p-3 flex items-center justify-center border-2 cursor-pointer"
             onClick={() => setMarkers([])}>
-            <span>Clear Mark</span>
+            <span>Clear</span>
           </button>
         ) : (
           <button
