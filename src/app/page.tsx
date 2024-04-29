@@ -1,12 +1,11 @@
 'use client'
 
-import React, { LegacyRef, useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { MapContainer, TileLayer, GeoJSON, Marker, useMapEvents } from 'react-leaflet'
 import "leaflet/dist/leaflet.css"
 import L, { Icon, LatLngBoundsExpression, LatLngExpression } from "leaflet";
 import { useState } from 'react'
 import { saveAs } from 'file-saver';
-import { GeoJSON as LeafletGeoJSON } from "leaflet";
 
 export default function Home(this: any) {
 
@@ -14,6 +13,7 @@ export default function Home(this: any) {
   const bounds: LatLngBoundsExpression | undefined = [[-90, -180], [90, 180]];
   const [geoFile, setGeoFile] = useState<File>();
   const [geoContent, setGeoContent] = useState<any>(null);
+  const geoHeaders  = useRef<any>();
   const [markers, setMarkers] = useState<[number, number][]>([]);
   const [fileNum, setFileNum] = useState<number>(1);
   const geoJsonRef = useRef<any>()
@@ -21,8 +21,8 @@ export default function Home(this: any) {
 
   useEffect(() => {
     if (geoJsonRef.current) {
-      geoJsonRef.current.clearLayers()   
-      geoJsonRef.current.addData(geoContent) 
+      geoJsonRef.current.clearLayers()
+      geoJsonRef.current.addData(geoContent)
     }
   }, [geoJsonRef, geoContent])
 
@@ -44,15 +44,21 @@ export default function Home(this: any) {
   };
 
   L.Marker.prototype.options.icon = L.icon({
-    iconUrl: "https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png"
+    iconUrl: ("./point.png"),
+    iconSize: [12, 12]
   });
 
-  function onEachFeature(feature: any, layer: L.Layer) {
-    if (feature.properties) {
-      const { popupContent } = feature.properties;
-      layer.bindPopup(popupContent);
-    }
+function onEachFeature(feature: any, layer: L.Layer) {
+  if (feature.properties) {
+    let popupContent = ''; 
+
+    geoHeaders.current.forEach((geoHeader: any) => {
+      let { [geoHeader]: headerValue } = feature.properties;
+      popupContent += `${geoHeader}: ${headerValue} `; 
+    });
+    layer.bindPopup(popupContent); 
   }
+}
 
   const handleGeoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -63,6 +69,7 @@ export default function Home(this: any) {
       reader.onload = (e) => {
         const content = e.target?.result as string;
         setGeoContent(JSON.parse(content));
+        geoHeaders.current = Object.getOwnPropertyNames(JSON.parse(content).features[0].properties);
       };
       reader.readAsText(file);
     }
@@ -72,7 +79,8 @@ export default function Home(this: any) {
     const features = markers.map((position) => ({
       type: "Feature",
       properties: {
-        "popupContent": `lng: ${position[0]} lat: ${position[1]}`
+        "lng": `${position[0]}`,
+        "lat": `${position[1]}`
       },
       geometry: {
         type: "Point",
@@ -153,7 +161,7 @@ export default function Home(this: any) {
         ))}
 
         {geoContent != null ? (
-          < GeoJSON data={geoContent} onEachFeature={onEachFeature} ref={geoJsonRef}/>
+          < GeoJSON data={geoContent} onEachFeature={onEachFeature} ref={geoJsonRef} />
         ) : null}
       </MapContainer >
 
