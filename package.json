@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@types/react-leaflet": "^3.0.0",
     "file-saver": "^2.0.5",
     "leaflet": "^1.9.4",
     "next": "14.2.3",
