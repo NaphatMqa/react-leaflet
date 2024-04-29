@@ -18,7 +18,6 @@ export default function Home(this: any) {
   const [fileNum, setFileNum] = useState<number>(1);
   const geoJsonRef = useRef<any>()
 
-
   useEffect(() => {
     if (geoJsonRef.current) {
       geoJsonRef.current.clearLayers()
