@@ -24,14 +24,14 @@ export default function Home(this: any) {
       geoJsonRef.current.addData(geoContent)
     }
   }, [geoJsonRef, geoContent])
-/*
+
   const markerIcon = new Icon(
     {
       iconUrl: ("./pin.png"),
       iconSize: [30, 30]
     }
   );
-*/
+
   const LocationMarker = () => {
     const map = useMapEvents({
       click(e) {
@@ -41,12 +41,12 @@ export default function Home(this: any) {
     });
     return null;
   };
-/*
+
   L.Marker.prototype.options.icon = L.icon({
     iconUrl: ("./point.png"),
     iconSize: [12, 12]
   });
-*/
+
   function onEachFeature(feature: any, layer: L.Layer) {
     if (feature.properties) {
       let popupContent = '';
@@ -139,7 +139,8 @@ export default function Home(this: any) {
           </button>
         )}
       </div>
-      
+      {
+        typeof window !== 'undefined' ? (
           <MapContainer
             center={center}
             zoom={2.5}
@@ -156,14 +157,15 @@ export default function Home(this: any) {
 
             <LocationMarker />
             {markers.map((position, index) => (
-              <Marker key={index} position={position}/>
+              <Marker key={index} position={position} icon={markerIcon} />
             ))}
 
             {geoContent != null ? (
               < GeoJSON data={geoContent} onEachFeature={onEachFeature} ref={geoJsonRef} />
             ) : null}
           </MapContainer >
-        
+        ) : null
+      }
     </>
   );
 }
