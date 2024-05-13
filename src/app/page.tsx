@@ -139,7 +139,8 @@ export default function Home(this: any) {
           </button>
         )}
       </div>
-      
+      {
+        typeof window !== 'undefined' ? (
           <MapContainer
             center={center}
             zoom={2.5}
@@ -163,7 +164,8 @@ export default function Home(this: any) {
               < GeoJSON data={geoContent} onEachFeature={onEachFeature} ref={geoJsonRef} />
             ) : null}
           </MapContainer >
-        
+        ) : null
+      }
     </>
   );
 }
