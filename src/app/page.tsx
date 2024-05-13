@@ -13,7 +13,7 @@ export default function Home(this: any) {
   const bounds: LatLngBoundsExpression | undefined = [[-90, -180], [90, 180]];
   const [geoFile, setGeoFile] = useState<File>();
   const [geoContent, setGeoContent] = useState<any>(null);
-  const geoHeaders  = useRef<any>();
+  const geoHeaders = useRef<any>();
   const [markers, setMarkers] = useState<[number, number][]>([]);
   const [fileNum, setFileNum] = useState<number>(1);
   const geoJsonRef = useRef<any>()
@@ -47,17 +47,17 @@ export default function Home(this: any) {
     iconSize: [12, 12]
   });
 
-function onEachFeature(feature: any, layer: L.Layer) {
-  if (feature.properties) {
-    let popupContent = ''; 
+  function onEachFeature(feature: any, layer: L.Layer) {
+    if (feature.properties) {
+      let popupContent = '';
 
-    geoHeaders.current.forEach((geoHeader: any) => {
-      let { [geoHeader]: headerValue } = feature.properties;
-      popupContent += `${geoHeader}: ${headerValue} `; 
-    });
-    layer.bindPopup(popupContent); 
+      geoHeaders.current.forEach((geoHeader: any) => {
+        let { [geoHeader]: headerValue } = feature.properties;
+        popupContent += `${geoHeader}: ${headerValue} `;
+      });
+      layer.bindPopup(popupContent);
+    }
   }
-}
 
   const handleGeoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -139,31 +139,33 @@ function onEachFeature(feature: any, layer: L.Layer) {
           </button>
         )}
       </div>
+      {
+        typeof window !== 'undefined' ? (
+          <MapContainer
+            center={center}
+            zoom={2.5}
+            scrollWheelZoom={true}
+            maxBounds={bounds}
+            maxBoundsViscosity={1.0}
+            bounceAtZoomLimits={true}
+            minZoom={2.5}
+          >
 
-      <MapContainer
-        center={center}
-        zoom={2.5}
-        scrollWheelZoom={true}
-        maxBounds={bounds}
-        maxBoundsViscosity={1.0}
-        bounceAtZoomLimits={true}
-        minZoom={2.5}
-      >
+            <TileLayer
+              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
 
-        <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+            <LocationMarker />
+            {markers.map((position, index) => (
+              <Marker key={index} position={position} icon={markerIcon} />
+            ))}
 
-        <LocationMarker />
-        {markers.map((position, index) => (
-          <Marker key={index} position={position} icon={markerIcon} />
-        ))}
-
-        {geoContent != null ? (
-          < GeoJSON data={geoContent} onEachFeature={onEachFeature} ref={geoJsonRef} />
-        ) : null}
-      </MapContainer >
-
+            {geoContent != null ? (
+              < GeoJSON data={geoContent} onEachFeature={onEachFeature} ref={geoJsonRef} />
+            ) : null}
+          </MapContainer >
+        ) : null
+      }
     </>
   );
 }
